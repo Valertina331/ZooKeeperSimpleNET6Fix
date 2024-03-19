@@ -4,6 +4,7 @@ namespace ZooManager
 {
     public class Cat : Animal
     {
+        private bool move;
         public Cat(string name)
         {
             emoji = "🐱";
@@ -16,6 +17,8 @@ namespace ZooManager
         {
             base.Activate();
             Console.WriteLine("I am a cat. Meow.");
+            move = false;
+            Flee();
             Hunt();
         }
 
@@ -27,21 +30,61 @@ namespace ZooManager
          * cat also has a predator to avoid, since the cat may not want to run in
          * to a square that sets it up to be attacked!
          */
+        public void Flee()
+        {
+            if (Game.Seek(location.x, location.y, Direction.up, "raptor"))
+            {
+                if (Game.Retreat(this, Direction.down))
+                {
+                    move = true;
+                    return;
+                }
+            }
+            if (Game.Seek(location.x, location.y, Direction.down, "raptor"))
+            {
+                if (Game.Retreat(this, Direction.up))
+                {
+                    move = true;
+                    return;
+                }
+            }
+            if (Game.Seek(location.x, location.y, Direction.left, "raptor"))
+            {
+                if (Game.Retreat(this, Direction.right))
+                {
+                    move = true;
+                    return;
+                }
+            }
+            if (Game.Seek(location.x, location.y, Direction.right, "raptor"))
+            {
+                if (Game.Retreat(this, Direction.left))
+                {
+                    move = true;
+                    return;
+                }
+            }
+        }
+
         public void Hunt()
         {
-            if (Game.Seek(location.x, location.y, Direction.up, "mouse"))
+            if (Game.Seek(location.x, location.y, Direction.up, "mouse")
+                || Game.Seek(location.x, location.y, Direction.up, "chick"))
             {
                 Game.Attack(this, Direction.up);
             }
-            else if (Game.Seek(location.x, location.y, Direction.down, "mouse"))
+            else if (Game.Seek(location.x, location.y, Direction.down, "mouse")
+                || Game.Seek(location.x, location.y, Direction.down, "chick"))
             {
                 Game.Attack(this, Direction.down);
             }
-            else if (Game.Seek(location.x, location.y, Direction.left, "mouse"))
+            else if (Game.Seek(location.x, location.y, Direction.left, "mouse")
+                || Game.Seek(location.x, location.y, Direction.left, "chick"))
             {
                 Game.Attack(this, Direction.left);
             }
-            else if (Game.Seek(location.x, location.y, Direction.right, "mouse"))
+            else if (Game.Seek(location.x, location.y, Direction.right, "mouse")
+                || Game.Seek(location.x, location.y, Direction.right, "chick"))
             {
                 Game.Attack(this, Direction.right);
             }

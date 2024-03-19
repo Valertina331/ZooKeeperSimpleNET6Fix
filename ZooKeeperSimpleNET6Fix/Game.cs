@@ -90,8 +90,10 @@ namespace ZooManager
         static public void AddAnimalToHolding(string animalType)
         {
             if (holdingPen.occupant != null) return;
+            if (animalType == "raptor") holdingPen.occupant = new Raptor("Raptorr");
             if (animalType == "cat") holdingPen.occupant = new Cat("Fluffy");
             if (animalType == "mouse") holdingPen.occupant = new Mouse("Squeaky");
+            if (animalType == "chick") holdingPen.occupant = new Chick("chicky");
             Console.WriteLine($"Holding pen occupant at {holdingPen.occupant.location.x},{holdingPen.occupant.location.y}");
             ActivateAnimals();
         }
