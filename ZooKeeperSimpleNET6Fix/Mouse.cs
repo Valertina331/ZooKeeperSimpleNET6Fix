@@ -32,19 +32,19 @@ namespace ZooManager
          */
         public void Flee()
         {
-            if (Game.Seek(location.x, location.y, Direction.up, "cat"))
+            if (Game.Seek(location.x, location.y, Direction.up, "cat", 1) > 0)
             {
                 if (Game.Retreat(this, Direction.down)) return;
             }
-            if (Game.Seek(location.x, location.y, Direction.down, "cat"))
+            if (Game.Seek(location.x, location.y, Direction.down, "cat", 1) > 0)
             {
                 if (Game.Retreat(this, Direction.up)) return;
             }
-            if (Game.Seek(location.x, location.y, Direction.left, "cat"))
+            if (Game.Seek(location.x, location.y, Direction.left, "cat", 1) > 0)
             {
                 if (Game.Retreat(this, Direction.right)) return;
             }
-            if (Game.Seek(location.x, location.y, Direction.right, "cat"))
+            if (Game.Seek(location.x, location.y, Direction.right, "cat", 1) > 0)
             {
                 if (Game.Retreat(this, Direction.left)) return;
             }
