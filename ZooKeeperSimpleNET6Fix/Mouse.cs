@@ -1,4 +1,6 @@
 ﻿using System;
+using static System.Net.Mime.MediaTypeNames;
+
 namespace ZooManager
 {
     public class Mouse : Animal
@@ -32,22 +34,184 @@ namespace ZooManager
          */
         public void Flee()
         {
+            Random random = new Random();
+            List<Direction> possibleDirections = new List<Direction> { Direction.up, Direction.down, Direction.left, Direction.right };
+            List<Direction> secondDirections = new List<Direction> { Direction.up, Direction.down, Direction.left, Direction.right };
+
             if (Game.Seek(location.x, location.y, Direction.up, "cat", 1) > 0)
             {
-                if (Game.Retreat(this, Direction.down)) return;
+                possibleDirections.Remove(Direction.up);
             }
             if (Game.Seek(location.x, location.y, Direction.down, "cat", 1) > 0)
             {
-                if (Game.Retreat(this, Direction.up)) return;
+                possibleDirections.Remove(Direction.down);
             }
             if (Game.Seek(location.x, location.y, Direction.left, "cat", 1) > 0)
             {
-                if (Game.Retreat(this, Direction.right)) return;
+                possibleDirections.Remove(Direction.left);
             }
             if (Game.Seek(location.x, location.y, Direction.right, "cat", 1) > 0)
             {
-                if (Game.Retreat(this, Direction.left)) return;
+                possibleDirections.Remove(Direction.right);
             }
+
+            if (possibleDirections.Count > 0 && possibleDirections.Count < 4)
+            {
+                Direction moveDirection = possibleDirections[random.Next(possibleDirections.Count)];
+                Game.Move(this, moveDirection, 1);
+                int nextX;
+                int nextY;
+                if (moveDirection == Direction.up)
+                {
+                    nextX = location.x;
+                    nextY = location.y - 1;
+                    if (IsNextSafe(nextX, nextY))
+                    {
+                        Game.Move(this, moveDirection, 1);
+                    }
+                    else
+                    {
+                        secondDirections.Remove(Direction.down);
+                        if (Game.Seek(location.x, location.y, Direction.up, "cat", 1) > 0)
+                        {
+                            secondDirections.Remove(Direction.up);
+                        }
+                        if (Game.Seek(location.x, location.y, Direction.down, "cat", 1) > 0)
+                        {
+                            secondDirections.Remove(Direction.down);
+                        }
+                        if (Game.Seek(location.x, location.y, Direction.left, "cat", 1) > 0)
+                        {
+                            secondDirections.Remove(Direction.left);
+                        }
+                        if (Game.Seek(location.x, location.y, Direction.right, "cat", 1) > 0)
+                        {
+                            secondDirections.Remove(Direction.right);
+                        }
+
+                        if (secondDirections.Count > 0)
+                        {
+                            Direction nextDirection = secondDirections[random.Next(secondDirections.Count)];
+                            Game.Move(this, nextDirection, 1);
+                        }
+                    }
+                }
+                if (moveDirection == Direction.down)
+                {
+                    nextX = location.x;
+                    nextY = location.y + 1;
+                    if (IsNextSafe(nextX, nextY))
+                    {
+                        Game.Move(this, moveDirection, 1);
+                    }
+                    else
+                    {
+                        secondDirections.Remove(Direction.up);
+                        if (Game.Seek(location.x, location.y, Direction.up, "cat", 1) > 0)
+                        {
+                            secondDirections.Remove(Direction.up);
+                        }
+                        if (Game.Seek(location.x, location.y, Direction.down, "cat", 1) > 0)
+                        {
+                            secondDirections.Remove(Direction.down);
+                        }
+                        if (Game.Seek(location.x, location.y, Direction.left, "cat", 1) > 0)
+                        {
+                            secondDirections.Remove(Direction.left);
+                        }
+                        if (Game.Seek(location.x, location.y, Direction.right, "cat", 1) > 0)
+                        {
+                            secondDirections.Remove(Direction.right);
+                        }
+
+                        if (secondDirections.Count > 0)
+                        {
+                            Direction nextDirection = secondDirections[random.Next(secondDirections.Count)];
+                            Game.Move(this, nextDirection, 1);
+                        }
+                    }
+                }
+                if (moveDirection == Direction.left)
+                {
+                    nextX = location.x - 1;
+                    nextY = location.y;
+                    if (IsNextSafe(nextX, nextY))
+                    {
+                        Game.Move(this, moveDirection, 1);
+                    }
+                    else
+                    {
+                        secondDirections.Remove(Direction.right);
+                        if (Game.Seek(location.x, location.y, Direction.up, "cat", 1) > 0)
+                        {
+                            secondDirections.Remove(Direction.up);
+                        }
+                        if (Game.Seek(location.x, location.y, Direction.down, "cat", 1) > 0)
+                        {
+                            secondDirections.Remove(Direction.down);
+                        }
+                        if (Game.Seek(location.x, location.y, Direction.left, "cat", 1) > 0)
+                        {
+                            secondDirections.Remove(Direction.left);
+                        }
+                        if (Game.Seek(location.x, location.y, Direction.right, "cat", 1) > 0)
+                        {
+                            secondDirections.Remove(Direction.right);
+                        }
+
+                        if (secondDirections.Count > 0)
+                        {
+                            Direction nextDirection = secondDirections[random.Next(secondDirections.Count)];
+                            Game.Move(this, nextDirection, 1);
+                        }
+                    }
+                }
+                if (moveDirection == Direction.right)
+                {
+                    nextX = location.x + 1;
+                    nextY = location.y;
+                    if (IsNextSafe(nextX, nextY))
+                    {
+                        Game.Move(this, moveDirection, 1);
+                    }
+                    else
+                    {
+                        secondDirections.Remove(Direction.left);
+                        if (Game.Seek(location.x, location.y, Direction.up, "cat", 1) > 0)
+                        {
+                            secondDirections.Remove(Direction.up);
+                        }
+                        if (Game.Seek(location.x, location.y, Direction.down, "cat", 1) > 0)
+                        {
+                            secondDirections.Remove(Direction.down);
+                        }
+                        if (Game.Seek(location.x, location.y, Direction.left, "cat", 1) > 0)
+                        {
+                            secondDirections.Remove(Direction.left);
+                        }
+                        if (Game.Seek(location.x, location.y, Direction.right, "cat", 1) > 0)
+                        {
+                            secondDirections.Remove(Direction.right);
+                        }
+
+                        if (secondDirections.Count > 0)
+                        {
+                            Direction nextDirection = secondDirections[random.Next(secondDirections.Count)];
+                            Game.Move(this, nextDirection, 1);
+                        }
+                    }
+                }
+            }
+        }
+
+        private bool IsNextSafe(int x, int y)
+        {
+            if (x < 0 || y < 0 || x >= Game.numCellsX || y >= Game.numCellsY
+                || Game.animalZones[y][x].occupant != null || Game.animalZones[y][x].occupant.species == "cat")
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
