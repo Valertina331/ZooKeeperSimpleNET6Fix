@@ -3,6 +3,7 @@ namespace ZooManager
 {
 	public enum Direction
 	{
+		stay,
 		left,
 		right,
 		up,

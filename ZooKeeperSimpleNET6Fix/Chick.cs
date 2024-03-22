@@ -8,7 +8,7 @@ namespace ZooManager
             emoji = "🐥";
             species = "chick";
             this.name = name; // "this" to clarify instance vs. method parameter
-            reactionTime = new Random().Next(6, 10);
+            reactionTime = new Random().Next(6, 11);
         }
 
         public override void Activate()

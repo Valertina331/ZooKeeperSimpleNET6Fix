@@ -1,10 +1,10 @@
 ﻿using System;
+using ZooKeeperSimpleNET6Fix;
 
 namespace ZooManager
 {
-    public class Cat : Animal
+    public class Cat : Animal, IPredator, IPrey
     {
-        private bool move;
         public Cat(string name)
         {
             emoji = "🐱";
@@ -17,9 +17,15 @@ namespace ZooManager
         {
             base.Activate();
             Console.WriteLine("I am a cat. Meow.");
-            move = false;
-            Flee();
-            Hunt();
+            if ((this as IPrey).Flee(this, location.x, location.y, "rapter"))
+            {
+                Direction move = (this as IPrey).Flee1(location.x, location.y, "rapter");
+                Game.Move(this, move, 1);
+            }
+            else if ((this as IPredator).Hunt(this, location.x, location.y))
+            {
+                // hunt prey
+            }
         }
 
         /* Note that our cat is currently not very clever about its hunting.
@@ -30,65 +36,6 @@ namespace ZooManager
          * cat also has a predator to avoid, since the cat may not want to run in
          * to a square that sets it up to be attacked!
          */
-        public void Flee()
-        {
-            if (Game.Seek(location.x, location.y, Direction.up, "raptor", 1) > 0)
-            {
-                if (Game.Retreat(this, Direction.down))
-                {
-                    move = true;
-                    return;
-                }
-            }
-            if (Game.Seek(location.x, location.y, Direction.down, "raptor", 1) > 0)
-            {
-                if (Game.Retreat(this, Direction.up))
-                {
-                    move = true;
-                    return;
-                }
-            }
-            if (Game.Seek(location.x, location.y, Direction.left, "raptor", 1) > 0)
-            {
-                if (Game.Retreat(this, Direction.right))
-                {
-                    move = true;
-                    return;
-                }
-            }
-            if (Game.Seek(location.x, location.y, Direction.right, "raptor", 1) > 0)
-            {
-                if (Game.Retreat(this, Direction.left))
-                {
-                    move = true;
-                    return;
-                }
-            }
-        }
-
-        public void Hunt()
-        {
-            if (Game.Seek(location.x, location.y, Direction.up, "mouse", 1) > 0
-                || Game.Seek(location.x, location.y, Direction.up, "chick", 1) > 0)
-            {
-                Game.Attack(this, Direction.up);
-            }
-            else if (Game.Seek(location.x, location.y, Direction.down, "mouse", 1) > 0
-                || Game.Seek(location.x, location.y, Direction.down, "chick", 1) > 0)
-            {
-                Game.Attack(this, Direction.down);
-            }
-            else if (Game.Seek(location.x, location.y, Direction.left, "mouse", 1) > 0
-                || Game.Seek(location.x, location.y, Direction.left, "chick", 1) > 0)
-            {
-                Game.Attack(this, Direction.left);
-            }
-            else if (Game.Seek(location.x, location.y, Direction.right, "mouse", 1) > 0
-                || Game.Seek(location.x, location.y, Direction.right, "chick", 1) > 0)
-            {
-                Game.Attack(this, Direction.right);
-            }
-        }
     }
 }
 
