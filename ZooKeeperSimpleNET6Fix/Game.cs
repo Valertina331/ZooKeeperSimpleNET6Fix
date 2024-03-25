@@ -270,7 +270,6 @@ namespace ZooManager
                         x ++;
                         break;
                 }
-
                 if (x < 0 || y < 0 || x >= numCellsX || y >= numCellsY) break;
                 if (animalZones[y][x].occupant == null)
                 {

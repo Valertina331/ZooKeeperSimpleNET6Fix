@@ -22,35 +22,50 @@ namespace ZooManager
             base.Activate();
             Console.WriteLine("I am a mouse. Squeak.");
 
-            if ((this as IPrey).)
-            {
-
-            }
+            TotalFlee();
         }
 
-        public void TotalFlee(int x, int y, string predator)
+        public void TotalFlee()
         {
+            // make the first move
+            Random random = new Random();
+            Direction move = (this as IPrey).Flee1(location.x, location.y, "cat");
+
+            if (Game.Seek(location.x, location.y, move, "cat", 1) == 0)
+            {
+                Game.Move(this, move, 1);
+            }
+
             // make sure the prey will not flee back to the original suqare
             List<Direction> possibleDirections = new List<Direction> { Direction.up, Direction.down, Direction.left, Direction.right };
-            if ((this as IPrey).Flee(location.x, location.y, predator) == Direction.up)
+            if (move == Direction.up)
             {
                 possibleDirections.Remove(Direction.down);
             }
-            else if ((this as IPrey).Flee(location.x, location.y, predator) == Direction.down)
+            else if (move == Direction.down)
             {
                 possibleDirections.Remove(Direction.up);
             }
-            else if ((this as IPrey).Flee(location.x, location.y, predator) == Direction.left)
+            else if (move == Direction.left)
             {
                 possibleDirections.Remove(Direction.right);
             }
-            else if ((this as IPrey).Flee(location.x, location.y, predator) == Direction.right)
+            else if (move == Direction.right)
             {
                 possibleDirections.Remove(Direction.left);
             }
 
-            Direction move = (this as IPrey).Flee(location.x, location.y, "cat");
-            Game.Move(this, move, 1);
+            // if the mouse can countinue moving, the direction will not change,
+            // if cannot, it will choose a possible direction randomly.
+            if (Game.Seek(location.x, location.y, move, "cat", 2) == 0)
+            {
+                Game.Move(this, move, 1);
+            }
+            else if (possibleDirections.Count > 0)
+            {
+                Direction moveDirection = possibleDirections[random.Next(possibleDirections.Count)];
+                Game.Move(this, moveDirection, 1);
+            }
         }
 
         /* Note that our mouse is (so far) a teeny bit more strategic than our cat.
